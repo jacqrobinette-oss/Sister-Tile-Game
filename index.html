@@ -3,246 +3,88 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Sister Tile Game #001</title>
+<title>Sister Tile Game</title>
 <style>
-:root {
-  --bg:#f7f4ed; --card:#fffdf8; --ink:#232323; --muted:#6e6a63;
-  --line:#ddd7cc; --accent:#6e5aa6; --good:#2f7d52; --bad:#a94b4b;
-}
-* { box-sizing:border-box; }
-body {
-  margin:0; background:var(--bg); color:var(--ink);
-  font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
-}
-.wrap { max-width:560px; margin:0 auto; padding:22px 16px 36px; }
-h1 { text-align:center; margin:0; font-size:30px; }
-.sub { text-align:center; color:var(--muted); margin:6px 0 16px; }
-.stats { display:flex; justify-content:center; gap:10px; margin-bottom:14px; }
-.pill { background:var(--card); border:1px solid var(--line); border-radius:999px; padding:8px 12px; font-weight:700; }
-.current {
-  min-height:64px; background:var(--card); border:2px solid var(--line); border-radius:16px;
-  padding:12px; margin-bottom:14px; display:flex; align-items:center; justify-content:center;
-  text-align:center; font-size:20px; font-weight:800;
-}
-.grid { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; }
-.tile {
-  border:1.5px solid var(--line); border-radius:14px; background:var(--card); color:var(--ink);
-  min-height:58px; font-size:20px; font-weight:800;
-}
-.tile.selected { outline:3px solid #b8add7; }
-.tile.used { opacity:.3; }
-.actions { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:14px; }
-.action { border:0; border-radius:14px; min-height:48px; font-size:16px; font-weight:800; }
-.primary { background:var(--accent); color:#fff; }
-.secondary { background:#e8e3f4; color:#493a74; }
-.message { min-height:30px; text-align:center; padding-top:10px; font-weight:700; }
-.found { margin-top:14px; background:var(--card); border:1px solid var(--line); border-radius:16px; padding:13px; }
-.chips { display:flex; flex-wrap:wrap; gap:7px; }
-.chip { background:#e4f2e9; color:#245f40; border-radius:999px; padding:6px 10px; font-weight:800; }
-.footer { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-top:16px; }
-.small { border:1px solid var(--line); background:transparent; border-radius:999px; padding:8px 11px; font-weight:700; }
-#noscript { margin:14px 0; padding:10px; background:#fff1cc; border-radius:12px; color:#6e5400; }
-</style>
-</head>
-<body>
-<div class="wrap">
-  <h1>Sister Tile Game</h1>
-  <div class="sub">Puzzle #001 · Find five 4-tile words</div>
-
-  <div class="stats">
-    <div class="pill">Found: <span id="foundCount">0</span>/5</div>
-    <div class="pill">Score: <span id="score">0</span>/25</div>
-  </div>
-
-  <div class="current" id="current">Tap four tiles to build a word</div>
-
-  <div class="grid" id="grid">
-    <button class="tile" data-index="0" data-tile="wa">wa</button>
-<button class="tile" data-index="1" data-tile="der">der</button>
-<button class="tile" data-index="2" data-tile="fri">fri</button>
-<button class="tile" data-index="3" data-tile="gra">gra</button>
-<button class="tile" data-index="4" data-tile="on">on</button>
-<button class="tile" data-index="5" data-tile="ven">ven</button>
-<button class="tile" data-index="6" data-tile="ph">ph</button>
-<button class="tile" data-index="7" data-tile="ful">ful</button>
-<button class="tile" data-index="8" data-tile="to">to</button>
-<button class="tile" data-index="9" data-tile="re">re</button>
-<button class="tile" data-index="10" data-tile="mel">mel</button>
-<button class="tile" data-index="11" data-tile="sh">sh</button>
-<button class="tile" data-index="12" data-tile="ad">ad</button>
-<button class="tile" data-index="13" data-tile="ip">ip</button>
-<button class="tile" data-index="14" data-tile="ly">ly</button>
-<button class="tile" data-index="15" data-tile="ter">ter</button>
-<button class="tile" data-index="16" data-tile="pho">pho</button>
-<button class="tile" data-index="17" data-tile="end">end</button>
-<button class="tile" data-index="18" data-tile="tu">tu</button>
-<button class="tile" data-index="19" data-tile="won">won</button>
-  </div>
-
-  <noscript><div id="noscript">The tiles are visible, but interaction needs Safari or another browser with JavaScript enabled.</div></noscript>
-
-  <div class="actions">
-    <button class="action secondary" id="undoBtn">Undo</button>
-    <button class="action primary" id="submitBtn">Submit</button>
-  </div>
-
-  <div class="message" id="message"></div>
-
-  <div class="found">
-    <strong>Quartiles found</strong>
-    <div class="chips" id="foundList" style="margin-top:9px"><span style="color:#aaa49b">None yet</span></div>
-  </div>
-
-  <div class="footer">
-    <button class="small" id="hintBtn">Hint</button>
-    <button class="small" id="resetBtn">Reset</button>
-    <button class="small" id="shareBtn">Share Results</button>
-    <button class="small" id="solutionBtn">Show solution</button>
-  </div>
+:root{--bg:#f7f4ed;--card:#fffdf8;--ink:#232323;--muted:#6e6a63;--line:#ddd7cc;--accent:#6e5aa6;--good:#2f7d52;--bad:#a94b4b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+.wrap{max-width:560px;margin:0 auto;padding:22px 16px 36px}h1{text-align:center;margin:0;font-size:30px}.sub,.date{text-align:center;color:var(--muted)}.sub{margin:6px 0 6px}.date{font-size:13px;margin-bottom:14px}
+.stats{display:flex;justify-content:center;gap:10px;margin-bottom:14px}.pill{background:var(--card);border:1px solid var(--line);border-radius:999px;padding:8px 12px;font-weight:700}
+.current{min-height:64px;background:var(--card);border:2px solid var(--line);border-radius:16px;padding:12px;margin-bottom:14px;display:flex;align-items:center;justify-content:center;text-align:center;font-size:20px;font-weight:800}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.tile{border:1.5px solid var(--line);border-radius:14px;background:var(--card);color:var(--ink);min-height:58px;font-size:20px;font-weight:800}.tile.selected{outline:3px solid #b8add7}.tile.used{opacity:.30}
+.actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}.action{border:0;border-radius:14px;min-height:48px;font-size:16px;font-weight:800}.primary{background:var(--accent);color:#fff}.secondary{background:#e8e3f4;color:#493a74}
+.message{min-height:30px;text-align:center;padding-top:10px;font-weight:700}.found{margin-top:14px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:13px}.chips{display:flex;flex-wrap:wrap;gap:7px}.chip{background:#e4f2e9;color:#245f40;border-radius:999px;padding:6px 10px;font-weight:800}.footer{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:16px}.small{border:1px solid var(--line);background:transparent;border-radius:999px;padding:8px 11px;font-weight:700}
+</style></head>
+<body><div class="wrap">
+<h1>Sister Tile Game</h1>
+<div class="sub" id="puzzleLabel"></div><div class="date" id="dateLabel"></div>
+<div class="stats"><div class="pill">Found: <span id="foundCount">0</span>/5</div><div class="pill">Score: <span id="score">0</span>/25</div></div>
+<div class="current" id="current">Tap four tiles to build a word</div><div class="grid" id="grid">
+<button class="tile" data-id="0-2" data-text="da" data-si="0" data-ci="2">da</button>
+<button class="tile" data-id="3-1" data-text="ber" data-si="3" data-ci="1">ber</button>
+<button class="tile" data-id="2-2" data-text="ta" data-si="2" data-ci="2">ta</button>
+<button class="tile" data-id="4-3" data-text="t" data-si="4" data-ci="3">t</button>
+<button class="tile" data-id="4-1" data-text="spo" data-si="4" data-ci="1">spo</button>
+<button class="tile" data-id="1-0" data-text="mou" data-si="1" data-ci="0">mou</button>
+<button class="tile" data-id="3-2" data-text="r" data-si="3" data-ci="2">r</button>
+<button class="tile" data-id="0-3" data-text="y" data-si="0" data-ci="3">y</button>
+<button class="tile" data-id="2-3" data-text="l" data-si="2" data-ci="3">l</button>
+<button class="tile" data-id="4-0" data-text="pas" data-si="4" data-ci="0">pas</button>
+<button class="tile" data-id="3-0" data-text="straw" data-si="3" data-ci="0">straw</button>
+<button class="tile" data-id="0-1" data-text="i" data-si="0" data-ci="1">i</button>
+<button class="tile" data-id="2-1" data-text="pi" data-si="2" data-ci="1">pi</button>
+<button class="tile" data-id="1-1" data-text="nt" data-si="1" data-ci="1">nt</button>
+<button class="tile" data-id="1-2" data-text="ai" data-si="1" data-ci="2">ai</button>
+<button class="tile" data-id="2-0" data-text="hos" data-si="2" data-ci="0">hos</button>
+<button class="tile" data-id="3-3" data-text="y" data-si="3" data-ci="3">y</button>
+<button class="tile" data-id="0-0" data-text="hol" data-si="0" data-ci="0">hol</button>
+<button class="tile" data-id="1-3" data-text="n" data-si="1" data-ci="3">n</button>
+<button class="tile" data-id="4-2" data-text="r" data-si="4" data-ci="2">r</button>
 </div>
-
+<div class="actions"><button class="action secondary" id="undoBtn">Undo</button><button class="action primary" id="submitBtn">Submit</button></div>
+<div class="message" id="message"></div>
+<div class="found"><strong>Quartiles found</strong><div class="chips" id="foundList" style="margin-top:9px"><span style="color:#aaa49b">None yet</span></div></div>
+<div class="footer"><button class="small" id="hintBtn">Hint</button><button class="small" id="resetBtn">Reset</button><button class="small" id="shareBtn">Share Results</button><button class="small" id="solutionBtn">Show solution</button></div>
+</div>
+<noscript><div style="max-width:560px;margin:0 auto 20px;padding:12px 16px;text-align:center;color:#6e5400;background:#fff1cc;border-radius:12px">The puzzle tiles are visible here for preview. Open the published GitHub Pages site to play.</div></noscript>
 <script>
-(function() {
-  const solutions = {
-    wonderfully: ["won","der","ful","ly"],
-    friendship: ["fri","end","sh","ip"],
-    watermelon: ["wa","ter","mel","on"],
-    adventure: ["ad","ven","tu","re"],
-    photograph: ["pho","to","gra","ph"]
-  };
-  const hints = {
-    wonderfully: "In a delightful or excellent way.",
-    friendship: "A close relationship built on affection and trust.",
-    watermelon: "A large summer fruit with a green rind.",
-    adventure: "An exciting or unusual experience.",
-    photograph: "An image captured with a camera."
-  };
-
-  let selected = [];
-  let found = [];
-  let hintIndex = 0;
-  const storageKey = 'sisterTileGame001';
-
-  try {
-    const saved = JSON.parse(localStorage.getItem(storageKey) || '{}');
-    if (Array.isArray(saved.found)) found = saved.found.filter(w => solutions[w]);
-  } catch(e) {}
-
-  function saveProgress() {
-    try {
-      localStorage.setItem(storageKey, JSON.stringify({found: found}));
-    } catch(e) {}
-  }
-
-  const buttons = Array.from(document.querySelectorAll('.tile'));
-  const current = document.getElementById('current');
-  const message = document.getElementById('message');
-  const foundList = document.getElementById('foundList');
-
-  function tileText(i) { return buttons[i].dataset.tile; }
-
-  function consumed(i) {
-    const t = tileText(i);
-    return found.some(word => solutions[word].includes(t));
-  }
-
-  function render() {
-    buttons.forEach((b,i) => {
-      b.classList.toggle('selected', selected.includes(i));
-      b.classList.toggle('used', consumed(i));
-      b.disabled = consumed(i);
-    });
-
-    current.textContent = selected.length
-      ? selected.map(tileText).join(' + ') + ' → ' + selected.map(tileText).join('')
-      : 'Tap four tiles to build a word';
-
-    document.getElementById('foundCount').textContent = found.length;
-    document.getElementById('score').textContent = found.length * 5;
-
-    if (!found.length) {
-      foundList.innerHTML = '<span style="color:#aaa49b">None yet</span>';
-    } else {
-      foundList.innerHTML = found.map(w => '<span class="chip">' + w + '</span>').join('');
-    }
-  }
-
-  buttons.forEach((b,i) => {
-    b.addEventListener('click', () => {
-      if (consumed(i)) return;
-      if (selected.includes(i)) {
-        selected = selected.filter(x => x !== i);
-      } else if (selected.length < 4) {
-        selected.push(i);
-      }
-      message.textContent = '';
-      render();
-    });
-  });
-
-  document.getElementById('undoBtn').addEventListener('click', () => {
-    selected.pop(); message.textContent=''; render();
-  });
-
-  document.getElementById('submitBtn').addEventListener('click', () => {
-    if (selected.length !== 4) {
-      message.style.color='var(--bad)';
-      message.textContent='Choose exactly four tiles.';
-      return;
-    }
-    const word = selected.map(tileText).join('');
-    if (solutions[word] && !found.includes(word)) {
-      found.push(word);
-      saveProgress();
-      selected=[];
-      message.style.color='var(--good)';
-      message.textContent = found.length===5 ? '🎉 You found all five!' : '✓ Quartile found!';
-    } else {
-      message.style.color='var(--bad)';
-      message.textContent='Not one of today’s five Quartiles.';
-    }
-    render();
-  });
-
-  document.getElementById('hintBtn').addEventListener('click', () => {
-    const remaining = Object.keys(solutions).filter(w => !found.includes(w));
-    if (!remaining.length) {
-      alert('You found all five!');
-      return;
-    }
-    const w = remaining[hintIndex % remaining.length];
-    hintIndex++;
-    alert('Hint: ' + hints[w] + '\n\nOne tile in this word is: “' + solutions[w][0] + '”');
-  });
-
-  document.getElementById('resetBtn').addEventListener('click', () => {
-    if (confirm('Reset the puzzle?')) {
-      selected=[]; found=[]; hintIndex=0; localStorage.removeItem(storageKey); message.textContent=''; render();
-    }
-  });
-
-  document.getElementById('shareBtn').addEventListener('click', async () => {
-    const squares = Array.from({length:5}, (_,i) => i < found.length ? '🟩' : '⬜').join('');
-    const shareText = 'Sister Tile Game #001\n' + squares + '\n' + found.length + '/5 Quartiles found';
-    try {
-      if (navigator.share) {
-        await navigator.share({title:'Sister Tile Game #001', text:shareText});
-      } else if (navigator.clipboard) {
-        await navigator.clipboard.writeText(shareText);
-        alert('Results copied!\n\n' + shareText);
-      } else {
-        alert(shareText);
-      }
-    } catch(e) {}
-  });
-
-  document.getElementById('solutionBtn').addEventListener('click', () => {
-    if (!confirm('Reveal the answers?')) return;
-    alert(Object.keys(solutions).map(w => solutions[w].join(' + ') + ' → ' + w).join('\n'));
-  });
-
-  render();
+(function(){
+const WORD_BANK = [{"word": "watermelon", "tiles": ["wa", "ter", "mel", "on"], "hint": "A large summer fruit with a green rind."}, {"word": "friendship", "tiles": ["fri", "end", "sh", "ip"], "hint": "A close relationship built on affection and trust."}, {"word": "photograph", "tiles": ["pho", "to", "gra", "ph"], "hint": "An image captured with a camera."}, {"word": "adventure", "tiles": ["ad", "ven", "tu", "re"], "hint": "An exciting or unusual experience."}, {"word": "wonderfully", "tiles": ["won", "der", "ful", "ly"], "hint": "In a delightful or excellent way."}, {"word": "celebration", "tiles": ["ce", "le", "bra", "tion"], "hint": "A joyful event marking a special occasion."}, {"word": "information", "tiles": ["in", "for", "ma", "tion"], "hint": "Facts or knowledge communicated about something."}, {"word": "chocolate", "tiles": ["cho", "co", "la", "te"], "hint": "A sweet treat made from cacao."}, {"word": "telephone", "tiles": ["tel", "e", "pho", "ne"], "hint": "A device used for talking over a distance."}, {"word": "beautiful", "tiles": ["beau", "ti", "fu", "l"], "hint": "Very pleasing to the senses or mind."}, {"word": "important", "tiles": ["im", "por", "ta", "nt"], "hint": "Having great significance or value."}, {"word": "computer", "tiles": ["com", "pu", "te", "r"], "hint": "An electronic device used to process information."}, {"word": "elephant", "tiles": ["el", "e", "pha", "nt"], "hint": "A very large animal with a trunk."}, {"word": "hospital", "tiles": ["hos", "pi", "ta", "l"], "hint": "A place where people receive medical care."}, {"word": "calendar", "tiles": ["cal", "en", "da", "r"], "hint": "A system for organizing days and months."}, {"word": "vacation", "tiles": ["va", "ca", "ti", "on"], "hint": "Time away from work for rest or travel."}, {"word": "pineapple", "tiles": ["pine", "ap", "pl", "e"], "hint": "A tropical fruit with a spiky crown."}, {"word": "strawberry", "tiles": ["straw", "ber", "r", "y"], "hint": "A small red fruit with seeds on the outside."}, {"word": "sandwich", "tiles": ["san", "d", "wi", "ch"], "hint": "Food served between slices of bread."}, {"word": "breakfast", "tiles": ["bre", "ak", "fa", "st"], "hint": "The first meal of the day."}, {"word": "library", "tiles": ["li", "bra", "r", "y"], "hint": "A place where books and other materials are kept."}, {"word": "mountain", "tiles": ["mou", "nt", "ai", "n"], "hint": "A very high natural elevation of land."}, {"word": "rainbow", "tiles": ["rai", "n", "bo", "w"], "hint": "An arc of colors sometimes seen after rain."}, {"word": "holiday", "tiles": ["hol", "i", "da", "y"], "hint": "A special day of celebration or time off."}, {"word": "birthday", "tiles": ["bir", "th", "da", "y"], "hint": "The anniversary of the day someone was born."}, {"word": "surprise", "tiles": ["su", "r", "pri", "se"], "hint": "An unexpected event or discovery."}, {"word": "airport", "tiles": ["air", "po", "r", "t"], "hint": "A place where airplanes arrive and depart."}, {"word": "airplane", "tiles": ["air", "pla", "n", "e"], "hint": "A powered flying vehicle with wings."}, {"word": "journey", "tiles": ["jou", "r", "ne", "y"], "hint": "Travel from one place to another."}, {"word": "passport", "tiles": ["pas", "spo", "r", "t"], "hint": "An official document used for international travel."}, {"word": "restaurant", "tiles": ["res", "tau", "ra", "nt"], "hint": "A place where meals are prepared and served."}, {"word": "sandcastle", "tiles": ["sand", "ca", "st", "le"], "hint": "A structure built from sand, often at the beach."}, {"word": "seashell", "tiles": ["sea", "sh", "el", "l"], "hint": "A hard covering once occupied by a sea creature."}, {"word": "campfire", "tiles": ["ca", "mp", "fi", "re"], "hint": "An outdoor fire used while camping."}, {"word": "backpack", "tiles": ["back", "pa", "c", "k"], "hint": "A bag carried on the back."}, {"word": "bicycle", "tiles": ["bi", "cy", "cl", "e"], "hint": "A two-wheeled vehicle powered by pedaling."}, {"word": "notebook", "tiles": ["note", "bo", "o", "k"], "hint": "A book of blank or ruled pages for writing."}, {"word": "quilting", "tiles": ["qui", "lt", "i", "ng"], "hint": "Stitching layers of fabric together."}, {"word": "creative", "tiles": ["cre", "a", "ti", "ve"], "hint": "Having the ability to make or imagine new things."}, {"word": "mystery", "tiles": ["mys", "te", "r", "y"], "hint": "Something difficult or impossible to explain."}, {"word": "detective", "tiles": ["de", "tec", "ti", "ve"], "hint": "A person who investigates mysteries or crimes."}, {"word": "treasure", "tiles": ["trea", "su", "r", "e"], "hint": "Something valuable that is hidden or prized."}, {"word": "butterfly", "tiles": ["but", "ter", "fl", "y"], "hint": "An insect with large colorful wings."}, {"word": "dragonfly", "tiles": ["dra", "gon", "fl", "y"], "hint": "A fast-flying insect with a long body."}, {"word": "hummingbird", "tiles": ["hum", "ming", "bi", "rd"], "hint": "A tiny bird that can hover in place."}, {"word": "dolphin", "tiles": ["dol", "ph", "i", "n"], "hint": "An intelligent marine mammal."}, {"word": "lemonade", "tiles": ["le", "mo", "na", "de"], "hint": "A sweet-tart drink made from lemons."}, {"word": "spaghetti", "tiles": ["spa", "ghe", "tt", "i"], "hint": "Long thin pasta noodles."}, {"word": "hamburger", "tiles": ["ham", "bur", "ge", "r"], "hint": "A ground-beef patty often served on a bun."}, {"word": "challenge", "tiles": ["cha", "l", "len", "ge"], "hint": "A task that tests someone's abilities."}];
+const EPOCH = new Date(2026,7,28);
+function dayNumber(d){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());return Math.floor((x-EPOCH)/86400000)}
+function hash(s){let h=2166136261>>>0;for(let i=0;i<s.length;i++){h^=s.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function rng(seed){return function(){let t=seed+=0x6D2B79F5;t=Math.imul(t^t>>>15,t|1);t^=t+Math.imul(t^t>>>7,t|61);return((t^t>>>14)>>>0)/4294967296}}
+function shuffle(a,r){a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+const now=new Date(), offset=Math.max(0,dayNumber(now)), puzzleNumber=2+offset;
+const dateKey=now.getFullYear()+"-"+String(now.getMonth()+1).padStart(2,"0")+"-"+String(now.getDate()).padStart(2,"0");
+const r=rng(hash("SisterTileGame|"+dateKey));
+const chosen=shuffle(WORD_BANK.map((_,i)=>i),r).slice(0,5).map(i=>WORD_BANK[i]);
+let tiles=[];chosen.forEach((e,si)=>e.tiles.forEach((text,ci)=>tiles.push({id:si+"-"+ci,text,si,ci})));tiles=shuffle(tiles,r);
+const storageKey="sisterTileGame|"+dateKey;
+let selected=[],found=[],consumed=[],hintIndex=0;
+try{const s=JSON.parse(localStorage.getItem(storageKey)||"{}");if(Array.isArray(s.found))found=s.found;if(Array.isArray(s.consumed))consumed=s.consumed}catch(e){}
+function save(){try{localStorage.setItem(storageKey,JSON.stringify({found,consumed}))}catch(e){}}
+const grid=document.getElementById("grid"),current=document.getElementById("current"),message=document.getElementById("message"),foundList=document.getElementById("foundList");
+document.getElementById("puzzleLabel").textContent="Puzzle #"+String(puzzleNumber).padStart(3,"0")+" · Find five 4-tile words";
+document.getElementById("dateLabel").textContent=now.toLocaleDateString(undefined,{weekday:"long",month:"long",day:"numeric"});
+function render(){
+grid.innerHTML="";
+tiles.forEach((t,i)=>{const b=document.createElement("button");b.className="tile";b.textContent=t.text;if(selected.includes(i))b.classList.add("selected");if(consumed.includes(t.id)){b.classList.add("used");b.disabled=true}
+b.onclick=()=>{if(consumed.includes(t.id))return;if(selected.includes(i))selected=selected.filter(x=>x!==i);else if(selected.length<4)selected.push(i);message.textContent="";render()};grid.appendChild(b)});
+current.textContent=selected.length?selected.map(i=>tiles[i].text).join(" + ")+" → "+selected.map(i=>tiles[i].text).join(""):"Tap four tiles to build a word";
+document.getElementById("foundCount").textContent=found.length;document.getElementById("score").textContent=found.length*5;
+foundList.innerHTML=found.length?found.map(w=>'<span class="chip">'+w+"</span>").join(""):'<span style="color:#aaa49b">None yet</span>';
+}
+document.getElementById("undoBtn").onclick=()=>{selected.pop();message.textContent="";render()};
+document.getElementById("submitBtn").onclick=()=>{
+if(selected.length!==4){message.style.color="var(--bad)";message.textContent="Choose exactly four tiles.";return}
+const st=selected.map(i=>tiles[i]), word=st.map(t=>t.text).join(""), mi=chosen.findIndex(e=>e.word===word);
+const ok=mi>=0&&st.every((t,pos)=>t.si===mi&&t.ci===pos);
+if(ok&&!found.includes(word)){found.push(word);consumed.push(...st.map(t=>t.id));selected=[];save();message.style.color="var(--good)";message.textContent=found.length===5?"🎉 You found all five!":"✓ Quartile found!"}
+else{message.style.color="var(--bad)";message.textContent="Not one of today’s five Quartiles."}render()};
+document.getElementById("hintBtn").onclick=()=>{const rem=chosen.filter(e=>!found.includes(e.word));if(!rem.length){alert("You found all five!");return}const e=rem[hintIndex%rem.length];hintIndex++;alert("Hint: "+e.hint+"\n\nOne tile in this word is: “"+e.tiles[0]+"”")};
+document.getElementById("resetBtn").onclick=()=>{if(confirm("Reset today’s puzzle?")){selected=[];found=[];consumed=[];hintIndex=0;localStorage.removeItem(storageKey);message.textContent="";render()}};
+document.getElementById("shareBtn").onclick=async()=>{const squares=Array.from({length:5},(_,i)=>i<found.length?"🟩":"⬜").join("");const txt="Sister Tile Game #"+String(puzzleNumber).padStart(3,"0")+"\n"+squares+"\n"+found.length+"/5 Quartiles found";try{if(navigator.share)await navigator.share({title:"Sister Tile Game",text:txt});else if(navigator.clipboard){await navigator.clipboard.writeText(txt);alert("Results copied!\n\n"+txt)}else alert(txt)}catch(e){}};
+document.getElementById("solutionBtn").onclick=()=>{if(confirm("Reveal today’s answers?"))alert(chosen.map(e=>e.tiles.join(" + ")+" → "+e.word).join("\n"))};
+render();
 })();
-</script>
-</body>
-</html>
+</script></body></html>
